@@ -1,0 +1,7 @@
+#2C5F2D, #97BC62
+
+
+<div class="form-group">
+      <input type="file" id="imageUpload" accept="image/*" onchange="previewImage(event)">
+      <label for="imageUpload" class="file-upload-label">Choose an Image</label>
+    </div>
