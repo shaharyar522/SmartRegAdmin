@@ -1,56 +1,30 @@
 document.addEventListener("DOMContentLoaded", function () {
     let sections = {
-        dashboard: document.getElementById("dashboardSection"),
-        sliderList: document.getElementById("sliderListSection"),
-        newsList: document.getElementById("newsListSection"),
-        marqueeList: document.getElementById("marqueeListSection") // Added Marquee List
+        dashboard: document.getElementById("dashboardSection")
     };
 
     let links = {
-        dashboard: document.getElementById("dashboardLink"),
-        sliderList: document.getElementById("sliderListLink"),
-        newsList: document.getElementById("newsListLink"),
-        marqueeList: document.getElementById("marqueeListLink") // Added Marquee List Link
+        dashboard: document.getElementById("dashboardLink")
     };
 
-    // Initially hide all sections
-    Object.values(sections).forEach(section => section.style.display = "none");
+    // Initially hide the dashboard section
+    sections.dashboard.style.display = "none";
 
-    // Function to show only one section at a time
-    function showSection(selected) {
-        Object.keys(sections).forEach(key => {
-            if (key === selected) {
-                sections[key].style.display = "block";
-            } else {
-                sections[key].style.display = "none";
-            }
-        });
+    // Function to toggle the dashboard section visibility
+    function toggleSection() {
+        if (sections.dashboard.style.display === "none") {
+            sections.dashboard.style.display = "block";
+        } else {
+            sections.dashboard.style.display = "none";
+        }
     }
 
-    // Event listeners for menu items
+    // Event listener for the dashboard link to toggle visibility
     links.dashboard.addEventListener("click", function (event) {
         event.preventDefault();
-        showSection("dashboard");
-        history.pushState(null, "", "index.php");
-    });
-
-    links.sliderList.addEventListener("click", function (event) {
-        event.preventDefault();
-        showSection("sliderList");
-        history.pushState(null, "", "index.php?section=sliderList");
-    });
-
-    links.newsList.addEventListener("click", function (event) {
-        event.preventDefault();
-        showSection("newsList");
-        history.pushState(null, "", "index.php?section=newsList");
-    });
-
-    links.marqueeList.addEventListener("click", function (event) {
-        event.preventDefault();
-        showSection("marqueeList");
-        history.pushState(null, "", "index.php?section=marqueeList");
+        toggleSection();
+        // Optional: Update the URL without reloading the page
+        const currentDisplay = sections.dashboard.style.display === "block" ? "index.php" : "";
+        history.pushState(null, "", currentDisplay);
     });
 });
-
-

@@ -23,7 +23,7 @@ body {
 /* Sidebar */
 .sidebar {
   width: 20%;
-  background-color: #2a4479;
+  background-color: #2C5F2D;
   color: white;
   padding: 20px;
   height: 100vh;  /* Fixed height */
@@ -91,7 +91,7 @@ body {
   min-height: 100vh;
   height: auto;
   padding: 20px;
-  background-color: #8AB6F9;
+  background: linear-gradient(135deg, #2C5F2D, #97BC62);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   overflow-y: auto;
   flex-grow: 1; /* Ensures it expands with content */
