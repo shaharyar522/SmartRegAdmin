@@ -1,23 +1,23 @@
-const sliderBtn = document.getElementById('sliderBtn');
+const countryBtn = document.getElementById('countryBtn');
 const newsBtn = document.getElementById('newsBtn');
 const marqueeBtn = document.getElementById('marqueeBtn');
 const formSection = document.getElementById('formSection');
 
 // Event listeners to show the corresponding forms
-sliderBtn.addEventListener('click', () => showForm('slider'));
+countryBtn.addEventListener('click', () => showForm('slider'));
 newsBtn.addEventListener('click', () => showForm('news'));
 marqueeBtn.addEventListener('click', () => showForm('marquee'));
 
 function showForm(type) {
   // Hide all forms first
-  document.getElementById('sliderForm').style.display = 'none';
+  document.getElementById('countryform').style.display = 'none';
   document.getElementById('newsForm').style.display = 'none';
   document.getElementById('marqueeForm').style.display = 'none';
 
   // Show the relevant form
   switch (type) {
     case 'slider':
-      document.getElementById('sliderForm').style.display = 'block';
+      document.getElementById('countryform').style.display = 'block';
       break;
     case 'news':
       document.getElementById('newsForm').style.display = 'block';
