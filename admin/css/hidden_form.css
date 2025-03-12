@@ -65,7 +65,7 @@
     /* Bottom Section: Interactive Form */
     .form-container {
         display: none;
-        background-color: #2a4479;
+        background-color:#2C5F2D;
         padding: 20px;
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
@@ -85,7 +85,7 @@
 
     .form-container input,
     .form-container textarea {
-        background-color: #2a4479;
+        background:  #97BC62;
         margin-top: 12px;
         width: 100%;
         padding: 10px;
@@ -93,7 +93,7 @@
         border: 1px solid #ddd;
         border-radius: 5px;
         font-size: 16px;
-        color: white;
+        color: black;
     }
 
     .form-container input::placeholder,
@@ -104,8 +104,8 @@
     .form-container button {
         width: 100%;
         padding: 10px 20px;
-        background-color: #00246B;
-        color: #fff;
+        background-color:#6AB187;
+        color: black;
         border: none;
         border-radius: 5px;
         cursor: pointer;
@@ -114,8 +114,9 @@
     }
 
     .form-container button:hover {
-        background-color: #1a3d70;
+        background: linear-gradient(135deg,#97BC62, #2C5F2D);
         transform: scale(1.05);
+        color: white;
     }
 
     .container-two {

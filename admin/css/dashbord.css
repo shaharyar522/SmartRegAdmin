@@ -1,13 +1,17 @@
+/* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
 /* General Styles */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-size: 18px;
+  font-family: 'Poppins', sans-serif;
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Poppins', sans-serif;
   background-color: white;
   display: flex;
   min-height: 100vh;
@@ -16,7 +20,7 @@ body {
 /* Dashboard Layout */
 .admin-dashboard {
   display: flex;
-  min-height: 100vh;  /* Ensures full height */
+  min-height: 100vh;
   width: 100%;
 }
 
@@ -26,7 +30,7 @@ body {
   background-color: #2C5F2D;
   color: white;
   padding: 20px;
-  height: 100vh;  /* Fixed height */
+  height: 100vh;
   position: fixed;
   left: 0;
   top: 0;
@@ -79,7 +83,8 @@ body {
 }
 
 .sidebar ul li a:hover {
-  background-color: #00246B;
+  background-color: #97BC62;
+  color: black;
 }
 
 /* Main Content */
@@ -89,12 +94,11 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  height: auto;
   padding: 20px;
   background: linear-gradient(135deg, #2C5F2D, #97BC62);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   overflow-y: auto;
-  flex-grow: 1; /* Ensures it expands with content */
+  flex-grow: 1;
 }
 
 /* Dashboard Header */
@@ -130,7 +134,7 @@ body {
   background-color: #c0392b;
 }
 
-/* Table Styling (Ensuring Proper Expansion) */
+/* Table Styling */
 .table-container {
   flex-grow: 1;
   overflow-x: auto;
@@ -153,4 +157,58 @@ body {
 .table th {
   background-color: #00246B;
   color: white;
+}
+
+/* Top Section: Buttons */
+.top-section {
+  padding-top: 26px;
+  display: flex;
+  justify-content: center;
+  gap: 22px;
+  margin-bottom: 62px;
+}
+
+.btn {
+  background-color: #00246B;
+  color: white;
+  padding: 14px 28px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  transition: background-color 0.3s, transform 0.2s;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.btn:hover {
+  background-color: #1a3d70;
+  transform: scale(1.05);
+}
+
+/* Sidebar Action Buttons */
+.action-button {
+  display: block;
+  margin: 5px 0;
+  padding: 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  width: 100%;
+  text-align: left;
+  transition: background-color 0.3s ease;
+}
+
+.action-button:hover {
+  background-color: #0056b3;
+}
+
+/* Sidebar Height Fix */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow-y: auto;
 }

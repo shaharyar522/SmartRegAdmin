@@ -79,7 +79,7 @@
           <option value="Texas">Texas</option>
           <option value="Punjab">Punjab</option>
         </select>
-        <label for="state">State</label>
+        <label for="state">State </label>
       </div>
 
       <div class="form-group">

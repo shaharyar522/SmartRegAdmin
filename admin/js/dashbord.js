@@ -11,8 +11,8 @@ marqueeBtn.addEventListener('click', () => showForm('marquee'));
 function showForm(type) {
   // Hide all forms first
   document.getElementById('countryform').style.display = 'none';
-  document.getElementById('newsForm').style.display = 'none';
-  document.getElementById('marqueeForm').style.display = 'none';
+  document.getElementById('Stateform').style.display = 'none';
+  document.getElementById('CityForm').style.display = 'none';
 
   // Show the relevant form
   switch (type) {
@@ -20,10 +20,10 @@ function showForm(type) {
       document.getElementById('countryform').style.display = 'block';
       break;
     case 'news':
-      document.getElementById('newsForm').style.display = 'block';
+      document.getElementById('Stateform').style.display = 'block';
       break;
     case 'marquee':
-      document.getElementById('marqueeForm').style.display = 'block';
+      document.getElementById('CityForm').style.display = 'block';
       break;
   }
 }
