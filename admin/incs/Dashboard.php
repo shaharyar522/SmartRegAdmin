@@ -95,6 +95,8 @@ tbody tr:hover {
         max-width: 95%;
     }
 
+    
+
     th, td {
         padding: 10px;
         font-size: 14px;
