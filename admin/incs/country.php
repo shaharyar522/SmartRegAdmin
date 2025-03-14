@@ -1,7 +1,5 @@
 <?php
 include("../incs/conn.php");
-
-
 if (isset($_POST['submit'])  && $_POST['submit'] == 'sub') {
 
     $country_title = $_POST['country_title'];
