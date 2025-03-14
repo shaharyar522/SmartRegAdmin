@@ -1,228 +1,245 @@
+<?php
 
+
+$servername = "localhost";
+$username = "root";
+$password = "";
+$databasename = "student_registraction";
+
+
+$conn = mysqli_connect($servername,$username, $password,$databasename);
+
+if(!$conn){
+    die("connection Failed");
+}
+
+
+if (isset($_POST['submit_country'])  && $_POST['submit_country'] == 'sub') {
+
+    $country_title = $_POST['country_title'];
+
+    //ab hum data insert karay guy databse m 
+
+    $insert_query = "INSERT INTO country (country_title) VALUES ('$country_title')";
+
+    $result = mysqli_query($conn, $insert_query);
+
+    if ($result) {
+        // Redirect back with success message in URL
+        header("Location:../index.php?success=1");
+        exit();
+    } else {
+        // Redirect back with error message
+        header("Location:../index.php?error=" . urlencode(mysqli_error($conn)));
+        exit();
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../admin/css/hidden_form.css">
+    <link rel="stylesheet" href="./css/table.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <style>
-        /* Table Container */
-.table-container {
-    width: 100%;
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 15px;
-    background-color: #2a4479c7;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    overflow-x: auto;
-}
-
-/* Table Styling */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: #ffffff;
-    border-radius: 8px;
-    overflow: hidden;
-}
-
-/* Table Headers */
-thead {
-    background: #00246B;
-    color: white;
-}
-
-th, td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-}
-
-th {
-    font-size: 18px;
-}
-
-/* Table Rows */
-tbody tr:nth-child(even) {
-    background: #f4f4f4;
-}
-
-tbody tr:hover {
-    background: #6AB187;
-    color: white;
-}
-
-/* Action Buttons */
-.action-buttons {
-    display: flex;
-    gap: 10px;
-}
-
-.edit-btn, .delete-btn {
-    padding: 8px 14px;
-    border: none;
-    border-radius: 5px;
-    font-size: 14px;
-    cursor: pointer;
-    transition: background 0.3s, transform 0.2s;
-}
-
-.edit-btn {
-    background: #ffc107;
-    color: black;
-}
-
-.edit-btn:hover {
-    background: #e0a800;
-    transform: scale(1.05);
-}
-
-.delete-btn {
-    background: #dc3545;
-    color: white;
-}
-
-.delete-btn:hover {
-    background: #c82333;
-    transform: scale(1.05);
-}
-
-/* Responsive Styling */
-@media (max-width: 768px) {
-    .table-container {
-        max-width: 95%;
-    }
-
-    
-
-    th, td {
-        padding: 10px;
-        font-size: 14px;
-    }
-
-    .edit-btn, .delete-btn {
-        padding: 6px 12px;
-        font-size: 12px;
-    }
-}
-
-    </style>
-
+    <title>Country, State, City Forms</title>
 </head>
+
 <body>
-    <!-- Buttons to show Forms -->
-<div class="top-section">
-    <button id="countryBtn" class="btn" style="background-color:#6AB187; color: white; padding: 14px 28px; border: none; border-radius: 10px; cursor: pointer; font-size: 18px; font-weight: bold; transition: background-color 0.3s, transform 0.2s; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);">Country</button>
-    <button id="newsBtn" class="btn" style="background-color: #6AB187; color: white; padding: 14px 28px; border: none; border-radius: 10px; cursor: pointer; font-size: 18px; font-weight: bold; transition: background-color 0.3s, transform 0.2s; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);">State</button>
-
-    <button id="marqueeBtn" class="btn" style="background-color: #6AB187; color: white; padding: 14px 28px; border: none; border-radius: 10px; cursor: pointer; font-size: 18px; font-weight: bold; transition: background-color 0.3s, transform 0.2s; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);">City</button>
-
-</div>
-<!-- Forms Section -->
-<div id="formSection" class="bottom-section">
-    <div class="form-container" id="countryform" style="display:none;">
-        <h3>Add_Country</h3>
-
-        <form action="incs/country.php" method="POST" enctype="multipart/form-data">
-            <input type="text" name="country_title" placeholder="Add a Country">
-            <button type="submit" name="submit" value="sub">Submit</button>
-        </form>
-        
-       
+    <!-- Buttons to Show Forms -->
+    <div class="top-section">
+        <button id="countryBtn" class="btn">Country</button>
+        <button id="stateBtn" class="btn">State</button>
+        <button id="cityBtn" class="btn">City</button>
     </div>
-    <div class="form-container" id="Stateform" style="display:none;">
-        <h3>Add_State</h3>
-        <form action="" method="POST">
-          <input type="text" name="state" placeholder="Add a State">
-            <button type="submit" name="submit" value="sub">Submit</button>
-        </form>
+
+    <!-- Forms Section -->
+    <div id="formSection" class="bottom-section">
+        <!-- Country Form -->
+        <div class="form-container" id="countryForm" style="display:none;">
+            <h3>Add Country</h3>
+            <form action="" method="POST" enctype="multipart/form-data" onsubmit="handleFormSubmit(event, 'countryForm')">
+                <input type="text" name="country_title" placeholder="Add a Country">
+                <button type="submit_country" name="submit_country" value="sub">Submit</button>
+            </form>
+        </div>
+
+        <!-- State Form -->
+        <div class="form-container" id="stateForm" style="display:none;">
+            <h3>Add State</h3>
+            <form action="incs/state.php" method="POST" onsubmit="handleFormSubmit(event, 'stateForm')">
+                <input type="text" name="state" placeholder="Add a State">
+                <button type="submit" name="submit" value="sub">Submit</button>
+            </form>
+        </div>
+
+        <!-- City Form -->
+        <div class="form-container" id="cityForm" style="display:none;">
+            <h3>Add City</h3>
+            <form action="incs/city.php" method="POST" onsubmit="handleFormSubmit(event, 'cityForm')">
+                <input type="text" name="city" placeholder="Add a City">
+                <button type="submit" name="submit" value="sub">Submit</button>
+            </form>
+        </div>
     </div>
-    <div class="form-container" id="CityForm" style="display:none;">
-        <h3>Add_City</h3>
-        <form action="" method="POST">
-           <input type="text" name="city" placeholder="Add a  City">
-            <button type="submit" name="submit" value="sub">Submit</button>
-        </form>
+
+    <!-- Tables Section -->
+    <div id="tableSection">
+        <!-- Country Table -->
+        <div id="countryTable" style="display:none;">
+            <h3>Country List</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sr.</th>
+                        <th>Title</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data will be dynamically inserted here -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- State Table -->
+        <div id="stateTable" style="display:none;">
+            <h3>State List</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sr.</th>
+                        <th>Title</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data will be dynamically inserted here -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- City Table -->
+        <div id="cityTable" style="display:none;">
+            <h3>City List</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Sr.</th>
+                        <th>Title</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data will be dynamically inserted here -->
+                </tbody>
+            </table>
+        </div>
     </div>
-</div>
-<h3>Country List</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Sr.</th>
-                    <th>Title</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>sldfh</td>
-                    <td>sldfh</td>
-                    <td>sldfh</td>
-            
-            </tr>
-              
-            </tbody>
-        </table>
 
+    <!-- SweetAlert Script -->
+    <script>
+        // Check URL for success message
+        const urlParams = new URLSearchParams(window.location.search);
 
+        if (urlParams.has('success')) {
+            Swal.fire({
+                position: "top-end",
+                icon: "success",
+                title: "Your data has been successfully inserted.",
+                showConfirmButton: false,
+                timer: 1500
+            });
 
+            // Remove success from URL after showing alert
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
 
+        if (urlParams.has('error')) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: urlParams.get('error')
+            });
 
+            // Remove error from URL
+            window.history.replaceState({}, document.title, window.location.pathname);
+        }
+    </script>
 
+    <!-- JavaScript to Toggle Forms and Tables -->
+    <script>
+        // Get buttons
+        const countryBtn = document.getElementById('countryBtn');
+        const stateBtn = document.getElementById('stateBtn');
+        const cityBtn = document.getElementById('cityBtn');
 
+        // Get forms
+        const countryForm = document.getElementById('countryForm');
+        const stateForm = document.getElementById('stateForm');
+        const cityForm = document.getElementById('cityForm');
 
+        // Get tables
+        const countryTable = document.getElementById('countryTable');
+        const stateTable = document.getElementById('stateTable');
+        const cityTable = document.getElementById('cityTable');
 
-
-
-
-
-
-
-
-
-
-
-
-
-<!-- uay hamray pass sweet aler ka code hian country ka  -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    // Check URL for success message
-    const urlParams = new URLSearchParams(window.location.search);
-    
-    if (urlParams.has('success')) {
-        Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "Your data has been successfully inserted.",
-            showConfirmButton: false,
-            timer: 1500
+        // Toggle Country Form and Table
+        countryBtn.addEventListener('click', () => {
+            countryForm.style.display = 'block';
+            countryTable.style.display = 'block';
+            stateForm.style.display = 'none';
+            stateTable.style.display = 'none';
+            cityForm.style.display = 'none';
+            cityTable.style.display = 'none';
         });
 
-        // Remove success from URL after showing alert
-        window.history.replaceState({}, document.title, window.location.pathname);
-    }
-
-    if (urlParams.has('error')) {
-        Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: urlParams.get('error')
+        // Toggle State Form and Table
+        stateBtn.addEventListener('click', () => {
+            stateForm.style.display = 'block';
+            stateTable.style.display = 'block';
+            countryForm.style.display = 'none';
+            countryTable.style.display = 'none';
+            cityForm.style.display = 'none';
+            cityTable.style.display = 'none';
         });
 
-        // Remove error from URL
-        window.history.replaceState({}, document.title, window.location.pathname);
-    }
-</script>
+        // Toggle City Form and Table
+        cityBtn.addEventListener('click', () => {
+            cityForm.style.display = 'block';
+            cityTable.style.display = 'block';
+            countryForm.style.display = 'none';
+            countryTable.style.display = 'none';
+            stateForm.style.display = 'none';
+            stateTable.style.display = 'none';
+        });
 
+        // Handle Form Submission
+        function handleFormSubmit(event, formId) {
+            event.preventDefault(); // Prevent default form submission
+
+            const form = document.getElementById(formId);
+            const formData = new FormData(form);
+
+            fetch(form.action, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    window.location.href = window.location.href.split('?')[0] + '?success=1';
+                } else {
+                    window.location.href = window.location.href.split('?')[0] + '?error=Failed to submit data';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                window.location.href = window.location.href.split('?')[0] + '?error=Network error';
+            });
+        }
+    </script>
 </body>
+
 </html>
-
-
-
-
-
-
