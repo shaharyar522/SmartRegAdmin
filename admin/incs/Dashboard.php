@@ -41,6 +41,7 @@
            <input type="text" name="city" placeholder="Add a  City">
             <button type="submit" name="submit" value="sub">Submit</button>
         </form>
+        
     </div>
 </div>
 
