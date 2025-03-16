@@ -1,84 +1,80 @@
-const countryBtn = document.getElementById('countryBtn');
-const newsBtn = document.getElementById('newsBtn');
-const marqueeBtn = document.getElementById('marqueeBtn');
-const formSection = document.getElementById('formSection');
+document.addEventListener("DOMContentLoaded", function () {
+    const countryForm = document.getElementById("countryform");
+    const stateForm = document.getElementById("Stateform");
+    const cityForm = document.getElementById("CityForm");
 
-// Event listeners to show the corresponding forms
-countryBtn.addEventListener('click', () => showForm('slider'));
-newsBtn.addEventListener('click', () => showForm('news'));
-marqueeBtn.addEventListener('click', () => showForm('marquee'));
+    const countryBtn = document.getElementById("countryBtn");
+    const stateBtn = document.getElementById("stateBtn");
+    const cityBtn = document.getElementById("cityBtn");
 
-function showForm(type) {
-  // Hide all forms first
-  document.getElementById('countryform').style.display = 'none';
-  document.getElementById('Stateform').style.display = 'none';
-  document.getElementById('CityForm').style.display = 'none';
+    function showForm(formId) {
+        countryForm.style.display = "none";
+        stateForm.style.display = "none";
+        cityForm.style.display = "none";
 
-  // Show the relevant form
-  switch (type) {
-    case 'slider':
-      document.getElementById('countryform').style.display = 'block';
-      break;
-    case 'news':
-      document.getElementById('Stateform').style.display = 'block';
-      break;
-    case 'marquee':
-      document.getElementById('CityForm').style.display = 'block';
-      break;
-  }
-}
+        document.getElementById(formId).style.display = "block";
+        localStorage.setItem("visibleForm", formId);
+    }
 
-// Function to Save Content Based on Type
-function saveContent(type) {
-  switch (type) {
-    case 'slider':
-      const sliderTitle = document.getElementById('sliderTitle').value;
-      const sliderImage = document.getElementById('sliderImage').files[0];
+    countryBtn.addEventListener("click", function () {
+        showForm("countryform");
+    });
 
-      if (sliderTitle && sliderImage) {
-        alert('Slider saved successfully!');
-        // Add logic to display the image in the slider container
-      } else {
-        alert('Please fill all fields.');
-      }
-      break;
+    stateBtn.addEventListener("click", function () {
+        showForm("Stateform");
+    });
 
-    case 'news':
-      const newsTitle = document.getElementById('newsTitle').value;
-      const newsDescription = document.getElementById('newsDescription').value;
+    cityBtn.addEventListener("click", function () {
+        showForm("CityForm");
+    });
 
-      if (newsTitle && newsDescription) {
-        alert('News saved successfully!');
-        // Add logic to display the news in the news container
-      } else {
-        alert('Please fill all fields.');
-      }
-      break;
+    const visibleForm = localStorage.getItem("visibleForm");
+    if (visibleForm) {
+        document.getElementById(visibleForm).style.display = "block";
+    }
 
-    case 'marquee':
-      const marqueeText = document.getElementById('marqueeText').value;
+    // AJAX Form Submission
+    function handleFormSubmission(form, url) {
+        form.addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevent page reload
 
-      if (marqueeText) {
-        alert('Marquee text saved successfully!');
-        // Add logic to display the marquee text
-      } else {
-        alert('Please enter marquee text.');
-      }
-      break;
-  }
-}
+            let formData = new FormData(form);
 
-// Function to Preview Selected Image
-function previewImage() {
-  const image = document.getElementById('sliderImage').files[0];
+            fetch(url, {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json()) 
+            .then(data => {
+                if (data.success) {
+                    Swal.fire({
+                        icon: "success",
+                        title: "Success!",
+                        text: data.message
+                    });
 
-  if (image) {
-    const reader = new FileReader();
-    reader.onload = function (e) {
-      alert('Preview: ' + e.target.result);
-    };
-    reader.readAsDataURL(image);
-  } else {
-    alert('No image selected.');
-  }
-}
+                    form.reset();
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Error!",
+                        text: data.message
+                    });
+                }
+            })
+            .catch(error => {
+                Swal.fire({
+                    icon: "error",
+                    title: "Error!",
+                    text: "An unexpected error occurred."
+                });
+            });
+
+            localStorage.setItem("visibleForm", form.id);
+        });
+    }
+
+    if (countryForm) handleFormSubmission(countryForm, "country.php");
+    if (stateForm) handleFormSubmission(stateForm, "state.php");
+    if (cityForm) handleFormSubmission(cityForm, "city.php");
+});

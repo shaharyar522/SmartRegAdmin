@@ -13,12 +13,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <!-- js bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <style>
-    
-
-    
-
-    </style>
+   
 </head>
 
 <body>
@@ -34,15 +29,7 @@
             <!-- Only Dashboard Section -->
             <div id="dashboardSection" style="display: none;">
                 <?php include("incs/dashboard.php"); ?>
-            </div>
-           
-
-
-
-
-
-            
-
+            </div> 
         </div>
     </div>
 
