@@ -24,16 +24,16 @@
         </form>
 
     </div>
-    <div class="form-container" id="Stateform" style="display:none;">
+    <div class="form-container"  id="Stateform" style="display:none;">
         <h3>Add_State</h3>
-        <form action="" method="POST">
+        <form action="" method="POST" enctype="multipart/form-data">
           <input type="text" name="state" placeholder="Add a State">
             <button type="submit" name="submit" value="sub">Submit</button>
         </form>
     </div>
     <div class="form-container" id="CityForm" style="display:none;">
         <h3>Add_City</h3>
-        <form action="" method="POST">
+        <form action="" method="POST" enctype="multipart/form-data">
            <input type="text" name="city" placeholder="Add a  City">
             <button type="submit" name="submit" value="sub">Submit</button>
         </form>
@@ -64,10 +64,12 @@
 <!-- uay hamray pass sweet aler ka code hian country ka  -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    // Check URL for success message
+    document.addEventListener("DOMContentLoaded", function () {
+    // Check URL for success or error messages
     const urlParams = new URLSearchParams(window.location.search);
-    
-    if (urlParams.has('success')) {
+    const visibleForm = localStorage.getItem("visibleForm");
+
+    if (urlParams.has("success")) {
         Swal.fire({
             position: "top-end",
             icon: "success",
@@ -76,21 +78,36 @@
             timer: 1500
         });
 
-        // Remove success from URL after showing alert
+        // ✅ Ensure last opened form stays visible
+        if (visibleForm) {
+            document.getElementById(visibleForm).style.display = "block";
+        }
+
+        // ✅ Remove success from URL after showing alert
         window.history.replaceState({}, document.title, window.location.pathname);
     }
 
-    if (urlParams.has('error')) {
+    if (urlParams.has("error")) {
         Swal.fire({
             icon: "error",
             title: "Oops...",
-            text: urlParams.get('error')
+            text: urlParams.get("error")
         });
 
-        // Remove error from URL
+        // ✅ Ensure last opened form stays visible
+        if (visibleForm) {
+            document.getElementById(visibleForm).style.display = "block";
+        }
+
+        // ✅ Remove error from URL
         window.history.replaceState({}, document.title, window.location.pathname);
     }
+});
+
 </script>
+
+
+
 
 </body>
 </html>
