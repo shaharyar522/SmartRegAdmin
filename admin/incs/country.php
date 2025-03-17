@@ -1,23 +1,42 @@
 <?php
 include("../incs/conn.php");
-if (isset($_POST['submit'])  && $_POST['submit'] == 'sub') {
 
+if (isset($_POST['submit']) && $_POST['submit'] == 'sub') {
     $country_title = $_POST['country_title'];
 
-    //ab hum data insert karay guy databse m 
-
+    // Insert query
     $insert_query = "INSERT INTO country (country_title) VALUES ('$country_title')";
-
     $result = mysqli_query($conn, $insert_query);
 
     if ($result) {
-        // Redirect back with success message in URL
-        header("Location:../index.php?success=1");
-        exit();
+        echo "<script>
+            window.onload = function() {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: 'Your data has been saved successfully!',
+                    confirmButtonText: 'OK'
+                }).then(() => {
+                    window.location.href = '../index.php';
+                });
+            };
+        </script>";
     } else {
-        // Redirect back with error message
-        header("Location:../index.php?error=" . urlencode(mysqli_error($conn)));
-        exit();
+        echo "<script>
+            window.onload = function() {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: '" . mysqli_error($conn) . "',
+                    confirmButtonText: 'OK'
+                }).then(() => {
+                    window.location.href = '../dashboard.php';
+                });
+            };
+        </script>";
     }
 }
 ?>
+
+<!-- Add SweetAlert CDN -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
     const countryForm = document.getElementById("countryform");
-    const stateForm = document.getElementById("Stateform");
-    const cityForm = document.getElementById("CityForm");
+    const stateForm = document.getElementById("stateform");
+    const cityForm = document.getElementById("cityform");
 
     const countryBtn = document.getElementById("countryBtn");
     const stateBtn = document.getElementById("stateBtn");
@@ -21,19 +21,20 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     stateBtn.addEventListener("click", function () {
-        showForm("Stateform");
+        showForm("stateform");
     });
 
     cityBtn.addEventListener("click", function () {
-        showForm("CityForm");
+        showForm("cityform");
     });
 
+    // Keep the last opened form visible
     const visibleForm = localStorage.getItem("visibleForm");
     if (visibleForm) {
         document.getElementById(visibleForm).style.display = "block";
     }
 
-    // AJAX Form Submission
+    // ✅ AJAX Form Submission (Ensures data is submitted)
     function handleFormSubmission(form, url) {
         form.addEventListener("submit", function (event) {
             event.preventDefault(); // Prevent page reload
@@ -50,10 +51,11 @@ document.addEventListener("DOMContentLoaded", function () {
                     Swal.fire({
                         icon: "success",
                         title: "Success!",
-                        text: data.message
+                        text: "Your data has been saved successfully!",
+                        confirmButtonText: "OK"
                     });
 
-                    form.reset();
+                    form.reset(); // ✅ Clear input fields but keep form open
                 } else {
                     Swal.fire({
                         icon: "error",
@@ -70,11 +72,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
             });
 
+            // ✅ Keep the last form open
             localStorage.setItem("visibleForm", form.id);
         });
     }
 
-    if (countryForm) handleFormSubmission(countryForm, "country.php");
-    if (stateForm) handleFormSubmission(stateForm, "state.php");
-    if (cityForm) handleFormSubmission(cityForm, "city.php");
+    // ✅ Ensure all forms submit correctly
+    if (countryForm) handleFormSubmission(countryForm, "incs/country.php");
+    if (stateForm) handleFormSubmission(stateForm, "incs/state.php");
+    if (cityForm) handleFormSubmission(cityForm, "incs/city.php");
 });

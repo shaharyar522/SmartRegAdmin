@@ -15,7 +15,11 @@
 
           <!-- Sidebar navigation hian hamray pass es  main  -->
           <ul>
-              <li><a href="#" id="dashboardLink">Dashboard</a></li>
-         
+
+              <li><a href="?page=dashboard" id="dashboardLink">Dashboard</a></li>
+              <li><a href="?page=countryData" id="countryDataLink">Country Data</a></li>
+              <li><a href="?page=stateData" id="stateDataLink">State Data</a></li>
+              <li><a href="?page=cityData" id="cityDataLink">City Data</a></li>
+
           </ul>
       </div>

@@ -1,0 +1,23 @@
+.top-section {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.btn {
+    background-color: #6AB187;
+    color: white;
+    padding: 14px 28px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.2s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    margin: 5px;
+}
+
+.btn:hover {
+    background-color: #5a9f75;
+    transform: scale(1.05);
+}
