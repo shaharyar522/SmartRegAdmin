@@ -1,6 +1,6 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,41 +13,41 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
     <!-- js bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-   
 </head>
 
 <body>
     <?php include("./incs/left_admin_dashboard.php") ?>
+
     <div class="main-content">
         <div class="dashboard">
-
+            <!-- Header ko hataya nahi jayega -->
             <div class="dashboard-topbar">
                 <h1 class="dashboard-header">Interactive CMS Dashboard</h1>
                 <a href="../logout.php" class="logout-btn">Logout</a>
             </div>
 
-            <!-- Only Dashboard Section -->
-            <div id="dashboardSection" style="display: none;">
+            <!-- Sections -->
+            <div id="dashboardSection">
                 <?php include("incs/dashboard.php"); ?>
-            </div> 
+            </div>
+
+            <div id="countryDataSection" style="display: none;">
+                <?php include("incs/country_table.php"); ?>
+            </div>
+
+            <div id="stateDataSection" style="display: none;">
+                <?php include("incs/state_table.php"); ?>
+            </div>
+
+            <div id="cityDataSection" style="display: none;">
+                <?php include("incs/city_table.php"); ?>
+            </div>
         </div>
     </div>
 
-
-
-
-
-
-
-
-
-    <!-- //es main wo hidern hain  jab hum side par click kartain hian to haumay wo file show hntin hian -->
+    <!-- JavaScript -->
     <script src="js/hidden_sidebar.js"></script>
-    <!-- uay siraf only dashbord ki js hian jb hum click karay guty tab uay form show hnguy -->
     <script src="js/dashbord.js"></script>
-
-
- 
 </body>
 
 </html>

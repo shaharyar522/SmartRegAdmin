@@ -1,5 +1,10 @@
 document.addEventListener("DOMContentLoaded", function () {
-    let contentArea = document.querySelector(".main-content .dashboard"); // Yahan content show hoga
+    let sections = {
+        dashboard: document.getElementById("dashboardSection"),
+        countryData: document.getElementById("countryDataSection"),
+        stateData: document.getElementById("stateDataSection"),
+        cityData: document.getElementById("cityDataSection")
+    };
 
     let links = {
         dashboard: document.getElementById("dashboardLink"),
@@ -8,36 +13,26 @@ document.addEventListener("DOMContentLoaded", function () {
         cityData: document.getElementById("cityDataLink")
     };
 
-    function loadPage(url) {
-        fetch(url)
-            .then(response => response.text())
-            .then(data => {
-                contentArea.innerHTML = data; // Content ko replace karna
-            })
-            .catch(error => console.error("Error loading page:", error));
+    // Sab sections ko initially hide kar dena (sirf dashboard chhod kar)
+    for (let key in sections) {
+        if (sections[key] && key !== "dashboard") {
+            sections[key].style.display = "none";
+        }
     }
 
-    // Event listeners
-    links.dashboard.addEventListener("click", function (event) {
-        event.preventDefault();
-        loadPage("incs/dashboard.php");
-    });
+    // Function to show only the clicked section and hide others
+    function showSection(sectionKey) {
+        for (let key in sections) {
+            sections[key].style.display = (key === sectionKey) ? "block" : "none";
+        }
+    }
 
-    links.countryData.addEventListener("click", function (event) {
-        event.preventDefault();
-        loadPage("incs/country_table.php");
-    });
-
-    links.stateData.addEventListener("click", function (event) {
-        event.preventDefault();
-        loadPage("incs/state_table.php"); // Aap isko baad mein add kar sakte hain
-    });
-
-    links.cityData.addEventListener("click", function (event) {
-        event.preventDefault();
-        loadPage("incs/city_table.php"); // Aap isko baad mein add kar sakte hain
-    });
-
-    // Default page load (dashboard)
-    loadPage("incs/dashboard.php");
+    // Event listeners for each sidebar button
+    for (let key in links) {
+        links[key].addEventListener("click", function (event) {
+            event.preventDefault();
+            showSection(key);
+            history.pushState(null, "", key === "dashboard" ? "index.php" : "#" + key);
+        });
+    }
 });
