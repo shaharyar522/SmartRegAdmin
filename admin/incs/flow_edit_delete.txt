@@ -3,3 +3,19 @@
 // first modal paste witth boot strap 
 // edit button ko class dain guy 
 //
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ek maslla jo ky yad rahnkan hian hum nay ji ja redirect karwan ahina uska script lazmi hum lehkain guy 
+

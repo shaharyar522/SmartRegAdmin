@@ -1,51 +1,26 @@
 <?php
-
 include("conn.php");
 
-if(isset($_POST['snoEdit'])  && $_POST['snoEdit'] == 'sub')
-{
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+  if (isset($_POST['snoEdit'])) {
+    $Updat_country_id = $_POST['snoEdit'];
+    $Updat_title = $_POST['titleEdit'];
 
-  $country_id = $_POST['country_id'];
-  $updte_title = $_POST['country_title'];
+    $update_query = "UPDATE `country` SET `country_title` = '$Updat_title' WHERE `country`.`country_id` = $Updat_country_id";
 
+    $result = mysqli_query($conn, $update_query);
 
-  $update_query = "UPDATE country SET country_title = '$updte_title'  WHERE country_id = $country_id ";
-  $result = mysqli_query($conn, $update_query);
+    if ($result) {
+      header("Location: ../index.php?section=countryData&success=1");
+      exit();
+  } else {
+      echo "Failed to update data!";
+  }
 
-  if ($result) {
-    echo "<script>
-        window.onload = function() {
-            Swal.fire({
-                icon: 'success',
-                title: 'Success!',
-                text: 'Your data has been Update successfully!',
-                confirmButtonText: 'OK'
-            }).then(() => {
-                window.location.href = '../index.php';
-            });
-        };
-    </script>";
-} else {
-    echo "<script>
-        window.onload = function() {
-            Swal.fire({
-                icon: 'error',
-                title: 'Error!',
-                text: '" . mysqli_error($conn) . "',
-                confirmButtonText: 'OK'
-            }).then(() => {
-                window.location.href = '../dashboard.php';
-            });
-        };
-    </script>";
+  }
 }
-}
-
-
-
 
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -59,6 +34,7 @@ if(isset($_POST['snoEdit'])  && $_POST['snoEdit'] == 'sub')
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
   <!-- DataTables JS -->
   <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
 
 </head>
 
@@ -81,12 +57,12 @@ if(isset($_POST['snoEdit'])  && $_POST['snoEdit'] == 'sub')
           <form action="incs/country_table.php" method="POST">
             <div class="mb-3">
               <label for="" class="form-label">Title</label>
-              <input type="text" class="form-control"  name="titleEdit"  id="titleEdit">
+              <input type="text" class="form-control" name="titleEdit" id="titleEdit">
             </div>
             <button type="submit" class="btn btn-primary">Update_Country</button>
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             <!-- ab main es main hidden input tag dallun ga or us ko main trigger karo ga -->
-             <input type="hidden" name="snoEdit"  value="sub" id="snoEdit">
+            <input type="hidden" name="snoEdit" value="sub" id="snoEdit">
           </form>
 
         </div>
@@ -103,9 +79,9 @@ if(isset($_POST['snoEdit'])  && $_POST['snoEdit'] == 'sub')
     <table class="table" id="myTable">
       <thead>
         <tr>
-          <th>Sno</th>
-          <th>Title</th>
-          <th>Action</th>
+          <th style="text-align: center; vertical-align: middle;">Sno</th>
+          <th style="text-align: center; vertical-align: middle;">Title</th>
+          <th style="text-align: center; vertical-align: middle;">Action</th>
         </tr>
       </thead>
       <tbody>
@@ -119,8 +95,8 @@ if(isset($_POST['snoEdit'])  && $_POST['snoEdit'] == 'sub')
                          <th>" . $country_id  . "</th>
                           <td>" . $row['country_title'] . "</td>
                           <td>
-                          <button class='edit btn btn-sm btn-primary'>Edit</button> 
-                          <button class='delete_country_button btn btn-sm btn-danger' id=".$row['country_id'].">Delete</button></td>
+                          <button class='edit btn btn-sm btn-primary' id=" . $row['country_id'] . ">Edit</button> 
+                          <button class='delete_country_button btn btn-sm btn-danger' >Delete</button></td>
                           </tr>";
         }
         ?>
@@ -137,14 +113,14 @@ if(isset($_POST['snoEdit'])  && $_POST['snoEdit'] == 'sub')
         tr = e.target.parentNode.parentNode;
         tittle = tr.getElementsByTagName("td")[0].innerText;
         console.log(tittle);
-        document.getElementById("titleEdit").value = tittle; 
+        document.getElementById("titleEdit").value = tittle;
         snoEdit.value = e.target.id;
         console.log(e.target.id);
 
 
         // es ka matlab hain kay ka agar form hidden hain tu open kar dun or agar 
         // wo open hain tu us ko hidde kar dun;
-         $('#editModal').modal('toggle');
+        $('#editModal').modal('toggle');
       });
     });
   </script>
@@ -159,6 +135,29 @@ if(isset($_POST['snoEdit'])  && $_POST['snoEdit'] == 'sub')
       $('#myTable').DataTable();
     });
   </script>
+<script>
+  // Function to show alert if update is successful
+  function showSuccessAlert() {
+    Swal.fire({
+      title: "Success!",
+      text: "Your data has been updated successfully.",
+      icon: "success",
+      confirmButtonText: "OK"
+    });
+  }
+
+  // Check URL parameters
+  $(document).ready(function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('success')) {
+      showSuccessAlert();
+      // Remove the success param from URL to prevent repeat alerts
+      window.history.replaceState({}, document.title, window.location.pathname + window.location.search.replace(/&?success=1/, ''));
+    }
+  });
+</script>
+
+  
 </body>
 
 </html>
