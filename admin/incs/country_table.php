@@ -96,35 +96,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                           <td>" . $row['country_title'] . "</td>
                           <td>
                           <button class='edit btn btn-sm btn-primary' id=" . $row['country_id'] . ">Edit</button> 
-                          <button class='delete_country_button btn btn-sm btn-danger' >Delete</button></td>
+                          <button class='delete btn btn-sm btn-primary' id=".$row['country_id'].">Delete</button></td>
                           </tr>";
         }
         ?>
       </tbody>
     </table>
   </div>
+  <!-- End table -->
 
 
-  <script>
-    edits_button = document.getElementsByClassName('edit');
-    Array.from(edits_button).forEach((element) => {
-      element.addEventListener("click", (e) => {
-        console.log("edit", );
-        tr = e.target.parentNode.parentNode;
-        tittle = tr.getElementsByTagName("td")[0].innerText;
-        console.log(tittle);
-        document.getElementById("titleEdit").value = tittle;
-        snoEdit.value = e.target.id;
-        console.log(e.target.id);
 
-
-        // es ka matlab hain kay ka agar form hidden hain tu open kar dun or agar 
-        // wo open hain tu us ko hidde kar dun;
-        $('#editModal').modal('toggle');
-      });
-    });
-  </script>
-
+ 
 
 
 
@@ -135,6 +118,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
       $('#myTable').DataTable();
     });
   </script>
+
+
+<!-- UAY HAMRAY PASS WO CODE HIAN jab humn data ko inserted karay guy 
+ or wo us ko $result kay bad hun ny usy js ka code paste kya hina -->
 <script>
   // Function to show alert if update is successful
   function showSuccessAlert() {
@@ -157,7 +144,60 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   });
 </script>
 
+ <!-- start Edit js -->
+ <script>
+    edits_button = document.getElementsByClassName('edit');
+    Array.from(edits_button).forEach((element) => {
+      element.addEventListener("click", (e) => {
+        console.log("edit", );
+        tr = e.target.parentNode.parentNode;
+        tittle = tr.getElementsByTagName("td")[0].innerText;
+        console.log(tittle);
+        document.getElementById("titleEdit").value = tittle;
+        snoEdit.value = e.target.id;
+        console.log(e.target.id);
+
+
+        // es ka matlab hain kay ka agar form hidden hain tu open kar dun or agar 
+        // wo open hain tu us ko hidde kar dun;
+        $('#editModal').modal('toggle');
+      });
+    });
+</script>
+  <!-- End Edit js -->
+
+
+
+  <!-- start delete code -->
+  <script>
+    deletes_button = document.getElementsByClassName('delete');
+    Array.from( deletes_button).forEach((element) => {
+      element.addEventListener("click", (e) => {
+        console.log("edit", );
+        tr = e.target.parentNode.parentNode;
+        tittle = tr.getElementsByTagName("td")[0].innerText;
+
+        country_id = e.target.id.substr(1, )
+
+        //main pahly user say pohco ga kay ap es ko delete karna chatin hain
+        if(confirm("press a button")){
+          console.log("yes");
+          window.location = `../index.php?section=countryData?c${country_id}`;
+        }else
+        {
+          console.log("no");
+        }
+      });
+    });
+</script>
+<!-- End delete code -->
+
+
+
+
+
+
+
   
 </body>
-
 </html>

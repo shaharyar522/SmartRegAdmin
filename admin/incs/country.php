@@ -14,13 +14,6 @@ if (isset($_POST['submit']) && $_POST['submit'] == 'sub') {
         echo "Failed to update data!";
     }
 }
-
-
-
-
-
-
-
 ?>
 
 <!-- Add SweetAlert CDN -->
@@ -31,7 +24,7 @@ if (isset($_POST['submit']) && $_POST['submit'] == 'sub') {
   function showSuccessAlert() {
     Swal.fire({
       title: "Success!",
-      text: "Your data has been updated successfully.",
+      text: "Your data has been Inserted successfully.",
       icon: "success",
       confirmButtonText: "OK"
     });

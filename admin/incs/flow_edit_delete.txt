@@ -1,21 +1,29 @@
-
+edit flow
 
 // first modal paste witth boot strap 
 // edit button ko class dain guy 
-//
-
-
-
-
-
-
-
-
-
-
-
+//or phr js code lehknay kay bad  hum us ki js code lehkay guy
+//us ka bad update ka code lehkay guay
+// redirect kary guy or jo script ayen gi sweet alert wali wo bhie lehkay 
 
 
 
 // ek maslla jo ky yad rahnkan hian hum nay ji ja redirect karwan ahina uska script lazmi hum lehkain guy 
+// jasy hum nay country main uay code dalla hina or us ko   
+if ($result) {
+        header("Location: ../index.php?section=countryData&success=1");
+        exit();
+    } else {
+        echo "Failed to update data!";
+    }
+    or us kay necay hum nay js ka code lehka hain jo  kay sweet alert ka message show karewa ga 
+
+
+
+delete flow
+
+1. firs of all id or class dian guy hum delete button main
+2.
+
+
 
