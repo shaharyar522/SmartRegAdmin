@@ -1,6 +1,21 @@
 <?php
 include("conn.php");
 
+
+if (isset($_GET['delete'])) {
+  $country_id = $_GET['delete'];
+
+  $sql = "DELETE FROM `country` WHERE `country_id` = $country_id";
+  $result = mysqli_query($conn, $sql);
+
+  
+}
+
+
+
+
+
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   if (isset($_POST['snoEdit'])) {
     $Updat_country_id = $_POST['snoEdit'];
@@ -13,14 +28,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($result) {
       header("Location: ../index.php?section=countryData&success=1");
       exit();
-  } else {
+    } else {
       echo "Failed to update data!";
-  }
-
+    }
   }
 }
-
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -96,7 +110,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                           <td>" . $row['country_title'] . "</td>
                           <td>
                           <button class='edit btn btn-sm btn-primary' id=" . $row['country_id'] . ">Edit</button> 
-                          <button class='delete btn btn-sm btn-primary' id=".$row['country_id'].">Delete</button></td>
+                          <button class='delete btn btn-sm btn-primary' id=d".$row['country_id'].">Delete</button></td>
                           </tr>";
         }
         ?>
@@ -107,7 +121,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
 
- 
+
 
 
 
@@ -120,32 +134,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   </script>
 
 
-<!-- UAY HAMRAY PASS WO CODE HIAN jab humn data ko inserted karay guy 
+  <!-- UAY HAMRAY PASS WO CODE HIAN jab humn data ko inserted karay guy 
  or wo us ko $result kay bad hun ny usy js ka code paste kya hina -->
-<script>
-  // Function to show alert if update is successful
-  function showSuccessAlert() {
-    Swal.fire({
-      title: "Success!",
-      text: "Your data has been updated successfully.",
-      icon: "success",
-      confirmButtonText: "OK"
-    });
-  }
 
-  // Check URL parameters
-  $(document).ready(function() {
-    const urlParams = new URLSearchParams(window.location.search);
-    if (urlParams.has('success')) {
-      showSuccessAlert();
-      // Remove the success param from URL to prevent repeat alerts
-      window.history.replaceState({}, document.title, window.location.pathname + window.location.search.replace(/&?success=1/, ''));
+ <!-- iserting code  -->
+  <script>
+    // Function to show alert if update is successful
+    function showSuccessAlert() {
+      Swal.fire({
+        title: "Success!",
+        text: "Your data has been updated successfully.",
+        icon: "success",
+        confirmButtonText: "OK"
+      });
     }
-  });
-</script>
 
- <!-- start Edit js -->
- <script>
+    // Check URL parameters
+    $(document).ready(function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has('success')) {
+        showSuccessAlert();
+        // Remove the success param from URL to prevent repeat alerts
+        window.history.replaceState({}, document.title, window.location.pathname + window.location.search.replace(/&?success=1/, ''));
+      }
+    });
+  </script>
+
+  <!-- start Edit js -->
+  <script>
     edits_button = document.getElementsByClassName('edit');
     Array.from(edits_button).forEach((element) => {
       element.addEventListener("click", (e) => {
@@ -163,7 +179,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $('#editModal').modal('toggle');
       });
     });
-</script>
+  </script>
   <!-- End Edit js -->
 
 
@@ -171,7 +187,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   <!-- start delete code -->
   <script>
     deletes_button = document.getElementsByClassName('delete');
-    Array.from( deletes_button).forEach((element) => {
+    Array.from(deletes_button).forEach((element) => {
       element.addEventListener("click", (e) => {
         console.log("edit", );
         tr = e.target.parentNode.parentNode;
@@ -180,17 +196,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         country_id = e.target.id.substr(1, )
 
         //main pahly user say pohco ga kay ap es ko delete karna chatin hain
-        if(confirm("press a button")){
+        if (confirm("press a button")) {
           console.log("yes");
           window.location = `../index.php?section=countryData?c${country_id}`;
-        }else
-        {
+        } else {
           console.log("no");
         }
       });
     });
-</script>
-<!-- End delete code -->
+  </script>
+  <!-- End delete code -->
 
 
 
@@ -198,6 +213,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
 
-  
+
 </body>
+
 </html>
