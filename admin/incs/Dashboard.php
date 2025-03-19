@@ -19,7 +19,7 @@
     <div id="formSection" class="bottom-section">
         <div class="form-container" id="countryform" style="display:none;">
             <h3>Add Country</h3>
-            <form action="incs/country.php" method="POST" enctype="multipart/form-data">
+            <form action="incs/insert_country.php" method="POST" enctype="multipart/form-data">
                 <input type="text" name="country_title" placeholder="Add a Country" required>
                 <button type="submit" name="submit" value="sub">Submit</button>
             </form>

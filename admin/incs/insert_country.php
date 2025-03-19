@@ -15,9 +15,9 @@ if (isset($_POST['submit']) && $_POST['submit'] == 'sub') {
       $_SESSION['error_message'] = "Failed to add country!"; // ✅ Add this line
   }
 
-  // Redirect to index.php?page=countryData
-  header("Location: ../index.php?page=countryData");
-  exit();
+// ✅ Redirect to index.php?section=countryData
+header("Location: /p4/admin/index.php?section=countryData");
+exit();
 
    
 }

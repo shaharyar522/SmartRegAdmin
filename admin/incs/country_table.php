@@ -2,11 +2,18 @@
 include("conn.php");
 
 
-if (isset($_GET['delete'])) {
-  $country_id = $_GET['delete'];
+if(isset($_GET['delete'])){
+ $country_id = $_GET['delete'];
 
-  $sql = "DELETE FROM `country` WHERE `country_id` = $country_id";
-  $result = mysqli_query($conn, $sql);
+ $delete_sql = "DELETE FROM `country` WHERE `country_id` =  $country_id";
+
+ $result = mysqli_query($conn,  $delete_sql);
+ if ($result) {
+  echo json_encode(["status" => "success", "message" => "Country deleted successfully!"]);
+} else {
+  echo json_encode(["status" => "error", "message" => "Failed to delete country!"]);
+}
+exit(); 
 }
 
 
@@ -108,7 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                           <td>" . $row['country_title'] . "</td>
                           <td>
                           <button class='edit btn btn-sm btn-primary' id=" . $row['country_id'] . ">Edit</button> 
-                          <button class='delete btn btn-sm btn-primary' id=d".$row['country_id'].">Delete</button></td>
+                          <button class='delete btn btn-sm btn-primary' id=d" . $row['country_id'] . ">Delete</button></td>
                           </tr>";
         }
         ?>
@@ -135,46 +142,93 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   <!-- UAY HAMRAY PASS WO CODE HIAN jab humn data ko inserted karay guy 
  or wo us ko $result kay bad hun ny usy js ka code paste kya hina -->
 
- <!-- iserting code  -->
- <script>
+  <!-- inserting sweet swal funciton js code   -->
+  <script>
     // Function to show SweetAlert2 messages
     function showAlert(type, title, message) {
-        Swal.fire({
-            icon: type,   // "success" or "error"
-            title: title,
-            text: message,
-            confirmButtonText: "OK",
-            customClass: {
-                popup: 'swal-custom-popup', // Custom styling
-                title: 'swal-custom-title',
-                confirmButton: 'swal-custom-btn'
-            }
-        });
+      Swal.fire({
+        icon: type, // "success" or "error"
+        title: title,
+        text: message,
+        confirmButtonText: "OK",
+        customClass: {
+          popup: 'swal-custom-popup', // Custom styling
+          title: 'swal-custom-title',
+          confirmButton: 'swal-custom-btn'
+        }
+      });
     }
 
     $(document).ready(function() {
-        // ✅ Show session-based messages (PHP to JS)
-        <?php
-        if (isset($_SESSION['success_message'])) {
-            echo "showAlert('success', 'Success!', '{$_SESSION['success_message']}');";
-            unset($_SESSION['success_message']); // Clear session message after displaying
-        }
+      // ✅ Show session-based messages (PHP to JS)
+      <?php
+      if (isset($_SESSION['success_message'])) {
+        echo "showAlert('success', 'Success!', '{$_SESSION['success_message']}');";
+        unset($_SESSION['success_message']); // Clear session message after displaying
+      }
 
-        if (isset($_SESSION['error_message'])) {
-            echo "showAlert('error', 'Error!', '{$_SESSION['error_message']}');";
-            unset($_SESSION['error_message']); // Clear session message after displaying
-        }
-        ?>
+      if (isset($_SESSION['error_message'])) {
+        echo "showAlert('error', 'Error!', '{$_SESSION['error_message']}');";
+        unset($_SESSION['error_message']); // Clear session message after displaying
+      }
+      ?>
 
-        // ✅ Show message if URL contains success=1
-        const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.has('success')) {
-            showAlert('success', 'Success!', 'Your data has been updated successfully.');
-            // Remove success parameter from URL to prevent repeat alerts
-            window.history.replaceState({}, document.title, window.location.pathname + window.location.search.replace(/&?success=1/, ''));
-        }
+      // ✅ Show message if URL contains success=1
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has('success')) {
+        showAlert('success', 'Success!', 'Your data has been updated successfully.');
+        // Remove success parameter from URL to prevent repeat alerts
+        window.history.replaceState({}, document.title, window.location.pathname + window.location.search.replace(/&?success=1/, ''));
+      }
     });
+  </script>
+  <!-- End inserting swal funciton js code  -->
+
+
+
+<!-- starting delet swal js code  -->
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    let deleteButtons = document.querySelectorAll(".delete");
+
+    deleteButtons.forEach((button) => {
+        button.addEventListener("click", function() {
+            let country_id = this.id.replace("d", ""); // Extract numeric ID
+
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // ✅ Redirect to delete PHP script
+                    window.location = `/p4/admin/incs/delete_country.php?delete=${country_id}`;
+                }
+            });
+        });
+    });
+});
 </script>
+
+
+<!-- End swal funciton js code  -->
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   <!-- start Edit js -->
@@ -203,25 +257,62 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
   <!-- start delete code -->
   <script>
-    deletes_button = document.getElementsByClassName('delete');
-    Array.from(deletes_button).forEach((element) => {
-      element.addEventListener("click", (e) => {
-        console.log("edit", );
-        tr = e.target.parentNode.parentNode;
-        tittle = tr.getElementsByTagName("td")[0].innerText;
+document.addEventListener("DOMContentLoaded", function () {
+    let deleteButtons = document.querySelectorAll(".delete");
 
-        country_id = e.target.id.substr(1, )
+    deleteButtons.forEach((button) => {
+        button.addEventListener("click", function () {
+            let country_id = this.id.replace("d", ""); // Extract numeric ID
 
-        //main pahly user say pohco ga kay ap es ko delete karna chatin hain
-        if (confirm("press a button")) {
-          console.log("yes");
-          window.location = `../index.php?section=countryData?${country_id}`;
-        } else {
-          console.log("no");
-        }
-      });
+            Swal.fire({
+              title: "Are you sure you want to delete this country?",
+              text: "This will permanently remove the country from the database!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // ✅ Redirect to delete PHP script
+                    fetch(`incs/country_table.php?delete=${country_id}`)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.status === "success") {
+                                Swal.fire({
+                                    icon: "success",
+                                    title: "Deleted!",
+                                    text: "Your country has been deleted successfully!",
+                                    confirmButtonText: "OK"
+                                }).then(() => {
+                                    // ✅ Redirect after confirmation
+                                    window.location.href = "index.php?section=countryData";
+                                });
+                            } else {
+                                Swal.fire({
+                                    icon: "error",
+                                    title: "Error!",
+                                    text: "Failed to delete the country!",
+                                    confirmButtonText: "OK"
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            Swal.fire({
+                                icon: "error",
+                                title: "Error!",
+                                text: "Something went wrong!",
+                                confirmButtonText: "OK"
+                            });
+                        });
+                }
+            });
+        });
     });
-  </script>
+});
+
+</script>
+
   <!-- End delete code -->
 
 

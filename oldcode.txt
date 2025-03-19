@@ -1,48 +1,131 @@
+<?php
+include("conn.php");
+
+
+if(isset($_GET['delete'])){
+ $country_id = $_GET['delete'];
+
+ $delete_sql = "DELETE FROM `country` WHERE `country_id` =  $country_id";
+
+ $result = mysqli_query($conn,  $delete_sql);
+ if ($result) {
+  $_SESSION['success_message'] = "Country deleted successfully!";
+} else {
+  $_SESSION['error_message'] = "Failed to delete country!";
+}
+
+// ✅ Redirect to main page
+header("Location: /p4/admin/index.php?section=countryData");
+exit();
+}
+
+
+
+
+
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+  if (isset($_POST['snoEdit'])) {
+    $Updat_country_id = $_POST['snoEdit'];
+    $Updat_title = $_POST['titleEdit'];
+
+    $update_query = "UPDATE `country` SET `country_title` = '$Updat_title' WHERE `country`.`country_id` = $Updat_country_id";
+
+    $result = mysqli_query($conn, $update_query);
+
+    if ($result) {
+      header("Location: ../index.php?section=countryData&success=1");
+      exit();
+    } else {
+      echo "Failed to update data!";
+    }
+  }
+}
+?>
+
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../admin/css/hidden_form.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- DataTables CSS -->
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+  <!-- jQuery (Required for DataTables) -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <!-- DataTables JS -->
+  <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+
 
 </head>
+
 <body>
-    <!-- Buttons to show Forms -->
-<div class="top-section">
-    <button id="countryBtn" class="btn" style="background-color:#6AB187; color: white; padding: 14px 28px; border: none; border-radius: 10px; cursor: pointer; font-size: 18px; font-weight: bold; transition: background-color 0.3s, transform 0.2s; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);">Country</button>
-    <button id="newsBtn" class="btn" style="background-color: #6AB187; color: white; padding: 14px 28px; border: none; border-radius: 10px; cursor: pointer; font-size: 18px; font-weight: bold; transition: background-color 0.3s, transform 0.2s; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);">State</button>
+  <?php require_once("conn.php") ?>
+  <!-- modal hian harmay apass -->
+  <!-- Button trigger modal -->
 
-    <button id="marqueeBtn" class="btn" style="background-color: #6AB187; color: white; padding: 14px 28px; border: none; border-radius: 10px; cursor: pointer; font-size: 18px; font-weight: bold; transition: background-color 0.3s, transform 0.2s; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);">City</button>
 
-</div>
-<!-- Forms Section -->
-<div id="formSection" class="bottom-section">
-    <div class="form-container" id="countryform" style="display:none;">
-        <h3>Add_Country</h3>
+  <!-- Modal -->
+  <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Edits Country_Data</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
 
-        <form action="incs/country.php" method="POST" enctype="multipart/form-data">
-            <input type="text" name="country_title" placeholder="Add a Country">
-            <button type="submit" name="submit" value="sub">Submit</button>
-        </form>
+          <form action="incs/country_table.php" method="POST">
+            <div class="mb-3">
+              <label for="" class="form-label">Title</label>
+              <input type="text" class="form-control" name="titleEdit" id="titleEdit">
+            </div>
+            <button type="submit" class="btn btn-primary">Update_Country</button>
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <!-- ab main es main hidden input tag dallun ga or us ko main trigger karo ga -->
+            <input type="hidden" name="snoEdit" value="sub" id="snoEdit">
+          </form>
 
+        </div>
+      </div>
     </div>
-    <div class="form-container" id="Stateform" style="display:none;">
-        <h3>Add_State</h3>
-        <form action="" method="POST">
-          <input type="text" name="state" placeholder="Add a State">
-            <button type="submit" name="submit" value="sub">Submit</button>
-        </form>
-    </div>
-    <div class="form-container" id="CityForm" style="display:none;">
-        <h3>Add_City</h3>
-        <form action="" method="POST">
-           <input type="text" name="city" placeholder="Add a  City">
-            <button type="submit" name="submit" value="sub">Submit</button>
-        </form>
-    </div>
-</div>
+  </div>
+
+  <!-- End modal  -->
+
+
+  <!-- this is table  -->
+  <div class="container my-4">
+    <h1 class="text-center fw-bold" style="color: white;">Country Data</h1>
+    <table class="table" id="myTable">
+      <thead>
+        <tr>
+          <th style="text-align: center; vertical-align: middle;">Sno</th>
+          <th style="text-align: center; vertical-align: middle;">Title</th>
+          <th style="text-align: center; vertical-align: middle;">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php
+        $query = "SELECT * FROM country";
+        $result = mysqli_query($conn, $query);
+        $country_id  = 0;
+        while ($row = mysqli_fetch_assoc($result)) {
+          $country_id++;
+          echo "<tr>
+                         <th>" . $country_id  . "</th>
+                          <td>" . $row['country_title'] . "</td>
+                          <td>
+                          <button class='edit btn btn-sm btn-primary' id=" . $row['country_id'] . ">Edit</button> 
+                          <button class='delete btn btn-sm btn-primary' id=d" . $row['country_id'] . ">Delete</button></td>
+                          </tr>";
+        }
+        ?>
+      </tbody>
+    </table>
+  </div>
+  <!-- End table -->
 
 
 
@@ -51,56 +134,155 @@
 
 
 
+  <!-- At the bottom before </body> -->
+  <script>
+    $(document).ready(function() {
+      $('#myTable').DataTable();
+    });
+  </script>
+
+
+  <!-- UAY HAMRAY PASS WO CODE HIAN jab humn data ko inserted karay guy 
+ or wo us ko $result kay bad hun ny usy js ka code paste kya hina -->
+
+  <!-- inserting sweet swal funciton js code   -->
+  <script>
+    // Function to show SweetAlert2 messages
+    function showAlert(type, title, message) {
+      Swal.fire({
+        icon: type, // "success" or "error"
+        title: title,
+        text: message,
+        confirmButtonText: "OK",
+        customClass: {
+          popup: 'swal-custom-popup', // Custom styling
+          title: 'swal-custom-title',
+          confirmButton: 'swal-custom-btn'
+        }
+      });
+    }
+
+    $(document).ready(function() {
+      // ✅ Show session-based messages (PHP to JS)
+      <?php
+      if (isset($_SESSION['success_message'])) {
+        echo "showAlert('success', 'Success!', '{$_SESSION['success_message']}');";
+        unset($_SESSION['success_message']); // Clear session message after displaying
+      }
+
+      if (isset($_SESSION['error_message'])) {
+        echo "showAlert('error', 'Error!', '{$_SESSION['error_message']}');";
+        unset($_SESSION['error_message']); // Clear session message after displaying
+      }
+      ?>
+
+      // ✅ Show message if URL contains success=1
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has('success')) {
+        showAlert('success', 'Success!', 'Your data has been updated successfully.');
+        // Remove success parameter from URL to prevent repeat alerts
+        window.history.replaceState({}, document.title, window.location.pathname + window.location.search.replace(/&?success=1/, ''));
+      }
+    });
+  </script>
+  <!-- End inserting swal funciton js code  -->
 
 
 
+<!-- starting delet swal js code  -->
 
-
-
-
-
-
-
-
-
-
-
-<!-- uay hamray pass sweet aler ka code hian country ka  -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    // Check URL for success message
-    const urlParams = new URLSearchParams(window.location.search);
-    
-    if (urlParams.has('success')) {
-        Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: "Your data has been successfully inserted.",
-            showConfirmButton: false,
-            timer: 1500
+  document.addEventListener("DOMContentLoaded", function() {
+    let deleteButtons = document.querySelectorAll(".delete");
+
+    deleteButtons.forEach((button) => {
+        button.addEventListener("click", function() {
+            let country_id = this.id.replace("d", ""); // Extract numeric ID
+
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // ✅ Redirect to delete PHP script
+                    window.location = `/p4/admin/incs/delete_country.php?delete=${country_id}`;
+                }
+            });
         });
-
-        // Remove success from URL after showing alert
-        window.history.replaceState({}, document.title, window.location.pathname);
-    }
-
-    if (urlParams.has('error')) {
-        Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: urlParams.get('error')
-        });
-
-        // Remove error from URL
-        window.history.replaceState({}, document.title, window.location.pathname);
-    }
+    });
+});
 </script>
 
+
+<!-- End swal funciton js code  -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <!-- start Edit js -->
+  <script>
+    edits_button = document.getElementsByClassName('edit');
+    Array.from(edits_button).forEach((element) => {
+      element.addEventListener("click", (e) => {
+        console.log("edit", );
+        tr = e.target.parentNode.parentNode;
+        tittle = tr.getElementsByTagName("td")[0].innerText;
+        console.log(tittle);
+        document.getElementById("titleEdit").value = tittle;
+        snoEdit.value = e.target.id;
+        console.log(e.target.id);
+
+
+        // es ka matlab hain kay ka agar form hidden hain tu open kar dun or agar 
+        // wo open hain tu us ko hidde kar dun;
+        $('#editModal').modal('toggle');
+      });
+    });
+  </script>
+  <!-- End Edit js -->
+
+
+
+  <!-- start delete code -->
+  <script>
+    deletes_button = document.getElementsByClassName('delete');
+    Array.from(deletes_button).forEach((element) => {
+      element.addEventListener("click", (e) => {
+        console.log("edit", );
+        tr = e.target.parentNode.parentNode;
+        tittle = tr.getElementsByTagName("td")[0].innerText;
+
+        country_id = e.target.id.substr(1, )
+
+        //main pahly user say pohco ga kay ap es ko delete karna chatin hain
+        
+      });
+    });
+  </script>
+  <!-- End delete code -->
+
+
+
+
+
+
+
+
 </body>
+
 </html>
-
-
-
-
-
-
