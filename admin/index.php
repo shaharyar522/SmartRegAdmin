@@ -1,3 +1,8 @@
+<?php
+session_start(); // Start the session to access messages
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,8 +10,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Register</title>
-    <!-- sweet alert  -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+   <!-- sweet alert  -->
+   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="css/dashbord.css">
     <link rel="stylesheet" href="css/header_h1.css">
     <!-- css botstarp -->
@@ -45,6 +50,44 @@
         </div>
     </div>
 
+
+
+
+
+
+
+
+<!-- this is the code when user submit country and show alert this message -->
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        <?php
+        if (isset($_SESSION['success_message'])) {
+            echo "Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: '{$_SESSION['success_message']}',
+                    confirmButtonText: 'OK'
+                });";
+            unset($_SESSION['success_message']); // Clear message after displaying
+        }
+
+        if (isset($_SESSION['error_message'])) {
+            echo "Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: '{$_SESSION['error_message']}',
+                    confirmButtonText: 'OK'
+                });";
+            unset($_SESSION['error_message']); // Clear message after displaying
+        }
+        ?>
+    });
+</script>
+
+
+
+    <!-- JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- JavaScript -->
     <script src="js/hidden_sidebar.js"></script>
     <script src="js/dashbord.js"></script>

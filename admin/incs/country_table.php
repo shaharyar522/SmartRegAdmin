@@ -7,8 +7,6 @@ if (isset($_GET['delete'])) {
 
   $sql = "DELETE FROM `country` WHERE `country_id` = $country_id";
   $result = mysqli_query($conn, $sql);
-
-  
 }
 
 
@@ -138,27 +136,46 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
  or wo us ko $result kay bad hun ny usy js ka code paste kya hina -->
 
  <!-- iserting code  -->
-  <script>
-    // Function to show alert if update is successful
-    function showSuccessAlert() {
-      Swal.fire({
-        title: "Success!",
-        text: "Your data has been updated successfully.",
-        icon: "success",
-        confirmButtonText: "OK"
-      });
+ <script>
+    // Function to show SweetAlert2 messages
+    function showAlert(type, title, message) {
+        Swal.fire({
+            icon: type,   // "success" or "error"
+            title: title,
+            text: message,
+            confirmButtonText: "OK",
+            customClass: {
+                popup: 'swal-custom-popup', // Custom styling
+                title: 'swal-custom-title',
+                confirmButton: 'swal-custom-btn'
+            }
+        });
     }
 
-    // Check URL parameters
     $(document).ready(function() {
-      const urlParams = new URLSearchParams(window.location.search);
-      if (urlParams.has('success')) {
-        showSuccessAlert();
-        // Remove the success param from URL to prevent repeat alerts
-        window.history.replaceState({}, document.title, window.location.pathname + window.location.search.replace(/&?success=1/, ''));
-      }
+        // ✅ Show session-based messages (PHP to JS)
+        <?php
+        if (isset($_SESSION['success_message'])) {
+            echo "showAlert('success', 'Success!', '{$_SESSION['success_message']}');";
+            unset($_SESSION['success_message']); // Clear session message after displaying
+        }
+
+        if (isset($_SESSION['error_message'])) {
+            echo "showAlert('error', 'Error!', '{$_SESSION['error_message']}');";
+            unset($_SESSION['error_message']); // Clear session message after displaying
+        }
+        ?>
+
+        // ✅ Show message if URL contains success=1
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('success')) {
+            showAlert('success', 'Success!', 'Your data has been updated successfully.');
+            // Remove success parameter from URL to prevent repeat alerts
+            window.history.replaceState({}, document.title, window.location.pathname + window.location.search.replace(/&?success=1/, ''));
+        }
     });
-  </script>
+</script>
+
 
   <!-- start Edit js -->
   <script>
@@ -198,7 +215,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         //main pahly user say pohco ga kay ap es ko delete karna chatin hain
         if (confirm("press a button")) {
           console.log("yes");
-          window.location = `../index.php?section=countryData?c${country_id}`;
+          window.location = `../index.php?section=countryData?${country_id}`;
         } else {
           console.log("no");
         }
