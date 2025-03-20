@@ -97,39 +97,21 @@ $conn->close();
         <label for="phone">Phone Number</label>
       </div>
       
-      <?php
-// Database connection
-$conn = new mysqli("localhost", "root", "", "student_registraction");
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-// Fetch country data
-$sql = "SELECT country_id, country_title FROM country";
-$result = $conn->query($sql);
-?>
-
-<div class="form-group">
-    <select id="country" name="student_country" required>
-        <option value="">Select Country</option>
+      <!-- Fetching Country Data from Database -->
         <?php
-        // Loop through the results and display as options
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                echo "<option value='" . $row['country_id'] . "'>" . $row['country_title'] . "</option>";
-            }
-        }
+        $sql = "SELECT country_id, country_title FROM country";
+        $result = $conn->query($sql);
         ?>
-    </select>
-    <label for="country">Country</label>
-</div>
-
-<?php
-// Close connection
-$conn->close();
-?>
+        <div class="form-group">
+          <select id="country" name="student_country" required>
+            <option value="">Select Country</option>
+            <?php
+            while ($row = mysqli_fetch_assoc($result)) {
+              echo "<option value='" . $row['country_id'] . "'>" . $row['country_title'] . "</option>";
+            }
+            ?>
+          </select>
+        </div>
 
       
       <div class="form-group">
