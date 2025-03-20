@@ -19,6 +19,8 @@
       <span id="placeholderText">No Image Selected</span>
     </div>
     <div>
+      
+   
 
     </div>
 
@@ -26,6 +28,11 @@
       <div class="form-group">
         <input type="text" id="student_name" name="student_name" required placeholder=" ">
         <label for="student_name">Student Name</label>
+      </div>
+      
+      <div class="form-group">
+        <input type="text" id="student_cnic" name="student_cnic" required placeholder=" ">
+        <label for="student_cnic">Student CNIC</label>
       </div>
 
       <div class="form-group">
@@ -38,10 +45,6 @@
         <label for="father_cnic">Father's CNIC</label>
       </div>
 
-      <div class="form-group">
-        <input type="text" id="student_cnic" name="student_cnic" required placeholder=" ">
-        <label for="student_cnic">Student CNIC</label>
-      </div>
 
       <div class="form-group">
         <input type="email" id="email" name="email" required placeholder=" ">
@@ -53,13 +56,6 @@
         <label for="phone">Phone Number</label>
       </div>
 
-     <!-- here is pate a image file opiotn same as phone number input  -->
-
-     
-      <div class="form-group">
-        <input type="file" id="image" name="image" accept="image/*">
-        <label for="image">Choose Image</label>
-      </div>
 
 
       <div class="form-group">
